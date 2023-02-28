@@ -9,6 +9,17 @@
   <link rel="icon" type="image/png" href= "https://i.postimg.cc/G360z6SB/overlook-icon.png">
 </head>
 <body>
+  <section class="login-page">
+    <h1>Welcome to the Overlook Resort!</h1>
+    <form class="login-form">
+      <label for="username">Username</label>
+      <input type="text" id="userLoginValue" placeholder="Enter Username" required>
+      <label for="password">Password</label>
+      <input type="text" id="userPassLoginValue" placeholder="Enter Password" required>
+      <button class="login-button">Login</button>
+      <p class="incorrect-login-text hidden">You entered in the incorrect username or password. Please try again.</p>
+    </form>
+  </section>
   <img src="./images/turing-logo.png" alt="turing logo">
   
   <!-- Do not include the scripts.js or class files here - it is done by the webpack server -->
