@@ -6,4 +6,5 @@ class User {
         this.bookingRoomDetails = []
         this.roomsBooked = []
         this.expenses = 0
+    }
 }
