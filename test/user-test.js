@@ -227,3 +227,26 @@ describe('user', () => {
  
         user1 = new User(userSample)
     })
+    it('should be a function', () => {
+        expect(User).to.be.a('function')
+    })
+
+    it('should be an instance of User', () => {
+        expect(user1).to.be.an.instanceof(User)
+    })
+
+    it('should have a id', () => {
+        expect(user1.id).to.equal(1)
+    })
+
+    it('should have a username', () => {
+        expect(user1.username).to.equal(`customer1`)
+    })
+
+    it('should have a name', () => {
+        expect(user1.name).to.equal('Leatha Ullrich')
+    })
+    
+    it('should have a username', () => {
+        expect(user1.username).to.equal('customer1')
+    })
