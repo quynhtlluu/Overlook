@@ -7,6 +7,15 @@ class User {
         this.roomsBooked = []
         this.expenses = 0
     }
+
+    retrieveUserExpenseTotal() {
+        const totalCost = this.roomsBooked.reduce((sum, room) => {
+            let total = sum + room.costPerNight
+            return total
+        }, 0)
+        return this.expenses = totalCost.toFixed(2)
+    }
+
     renderAvailableRooms(date, bookingData, roomData) {
         let numberOfBookedRooms = bookingData.reduce((arr, booking) => {
           if(booking.date === date) {
@@ -22,4 +31,6 @@ class User {
         }, [])
         return availableRooms
       }
+
+    
 }
