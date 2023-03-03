@@ -56,5 +56,16 @@ class User {
         return bookingRoomType
     }
 
+    determineUserPastBookings() {
+        const userBookedRooms = this.bookingRoomDetails.forEach(booking => {
+            if(this.id === booking.userId) {
+                this.roomsBooked.push(booking)
+                this.bookingRoomDetails.splice(this.bookingRoomDetails.indexOf(booking), 1)
+            }
+        })
+        return userBookedRooms
+    }
+
     
 }
+export default User
