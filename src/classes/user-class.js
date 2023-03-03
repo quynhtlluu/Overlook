@@ -32,5 +32,29 @@ class User {
         return availableRooms
       }
 
+      determineBookingRoomType(bookingsData, roomsData) {
+        const bookingRoomType = bookingsData.reduce((array, booking) => {
+            roomsData.forEach(room => {
+                if(room.number === booking.roomNumber) {
+                    const specificBookingRoomDetail = {
+                        bookingId: booking.id,
+                        userId: booking.userID,
+                        roomNumber: booking.roomNumber,
+                        roomType: room.roomType,
+                        bidet: room.bidet,
+                        bedSize: room.bedSize,
+                        numBeds: room.numBeds,
+                        costPerNight: room.costPerNight,
+                        date: booking.date
+                    }
+                    array.push(specificBookingRoomDetail)
+                }
+            })
+            return array
+        }, [])
+        this.bookingRoomDetails = bookingRoomType
+        return bookingRoomType
+    }
+
     
 }
