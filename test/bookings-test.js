@@ -11,4 +11,12 @@ describe('bookings', () => {
  
         booking1 = new Bookings(bookingSample)
     })
+
+    it('should be a function', () => {
+        expect(Bookings).to.be.a('function')
+    })
+
+    it('should be an instance of Bookings', () => {
+        expect(booking1).to.be.an.instanceof(Bookings)
+    })
 })
