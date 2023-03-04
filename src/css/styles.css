@@ -16,3 +16,25 @@ body {
 .login-button:hover {
   cursor: pointer;
 }
+
+.incorrect-login-text {
+  color: red;
+  font-size: 10px;
+}
+
+h1 {
+  font-size: 50px;
+  margin-bottom: 70px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  background-color: white;
+  height: 200px;
+  width: 300px;
+  border-radius: 50px 0px;
+  margin-left: 80px;
+}
