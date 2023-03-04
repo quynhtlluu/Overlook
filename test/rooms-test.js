@@ -12,4 +12,8 @@ describe('rooms', () => {
  
         room1 = new Rooms(roomSample)
     })
+
+    it('should be a function', () => {
+        expect(Rooms).to.be.a('function')
+    })
 })
