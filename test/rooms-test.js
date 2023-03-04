@@ -16,4 +16,8 @@ describe('rooms', () => {
     it('should be a function', () => {
         expect(Rooms).to.be.a('function')
     })
+
+    it('should be an instance of Bookings', () => {
+        expect(room1).to.be.an.instanceof(Rooms)
+    })
 })
