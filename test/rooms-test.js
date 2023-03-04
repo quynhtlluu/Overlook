@@ -1,3 +1,6 @@
+import { expect } from 'chai';
+import Rooms from '../src/classes/rooms';
+
 describe('rooms', () => {
     let room1;
     beforeEach(() => {
