@@ -2,3 +2,17 @@ body {
   background: radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(252,70,107,1) 100%);
   margin: 0%;
 }
+
+.login-page {
+  background-image: url("../images/login-page.png");
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.login-button:hover {
+  cursor: pointer;
+}
