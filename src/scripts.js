@@ -204,6 +204,13 @@ function currentDateNumbers() {
     day = dateNumbers[2]
 }
 
+function show(element) {
+    element.classList.remove('hidden')
+}
+
+function hide(element) {
+    element.classList.add('hidden')
+}
 
 // An example of how you tell webpack to use a CSS (SCSS) file
 import './css/styles.css';
