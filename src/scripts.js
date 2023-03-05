@@ -61,6 +61,59 @@ let month;
 let day;
 let bookedDateNumbers;
 
+
+//fetch functions
+function allCustomersFetch() {
+    fetch(`http://localhost:3001/api/v1/customers`)
+    .then(response => response.json())
+    .then(data => {
+        allCustomersData = data.customers
+        clientGenerator()
+    })
+}
+
+function roomsFetch() {
+    fetch(`http://localhost:3001/api/v1/rooms`)
+    .then(response => response.json())
+    .then(data => {
+        allRoomsData = data.rooms
+    })
+}
+
+function bookingsFetch() {
+    return fetch(`http://localhost:3001/api/v1/bookings`)
+    .then(response => response.json())
+    .then(data => {
+        allBookingsData = data.bookings
+    })
+}
+
+function addBookingsPost() {
+    return fetch(`http://localhost:3001/api/v1/bookings`, {
+        method:'POST',
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({ 
+            userID: currentClient.id, 
+            date: selectedDate,
+            roomNumber: roomNumber 
+        })
+    })
+    .then(response => { 
+        if (!response.ok) {
+          throw new Error('there was an error booking your reservation, Try again')
+        } else {
+            clearErrorMessages()
+            return response.json()
+        }
+    })
+    .then(newBooking => roomIdFromPost = newBooking.newBooking.id)
+    .then(() => bookingsFetch())
+    .catch(err => {
+        errorMessage.innerText = `${err.message}`
+        managerErrorMessage.innerText = `${err.message}`
+    })
+}
+
 // An example of how you tell webpack to use a CSS (SCSS) file
 import './css/styles.css';
 
