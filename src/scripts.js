@@ -147,6 +147,29 @@ function changeBookingData(bookingsData, roomsData) {
     return changeBookingDetails
 }
 
+function login(event) {
+    event.preventDefault()
+    return clients.find(client => {
+        if(client.username === username.value && password.value === "overlook2021") {
+            renderClientPage(client)
+            return client
+        }
+        else if(username.value === "manager" && password.value === "overlook2021") {
+            renderManagerPage()
+        }
+        else {
+            show(incorrentLoginText)
+        }
+    })
+}
+
+function showPastBookings() {
+    clients.forEach(client => client.determineUserPastBookings())
+    updatePastAndUpcomingBookingsContainer()
+    calculateClientExpenses()
+}
+
+
 // An example of how you tell webpack to use a CSS (SCSS) file
 import './css/styles.css';
 
