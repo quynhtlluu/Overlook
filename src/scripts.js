@@ -346,6 +346,40 @@ function determineAvailableRoomsConditions() {
     }
 }
 
+function renderUniqueRooms() {
+    const uniqueBookedRooms = []
+    const unique = roomsBookedOnDay.filter(room => {
+        const isDuplicate = uniqueBookedRooms.includes(room.bookingId)
+        if(!isDuplicate) {
+            uniqueBookedRooms.push(room.bookingId)
+            return true
+        }
+        return false
+    })
+    return roomsBookedOnDay = unique
+}
+
+function updateAvailableRoomsAndContainers() {
+    availableRoomsonDate.forEach(room => {
+        if(room.number === roomNumber) {
+            room.bookingId = roomIdFromPost
+            room.date = selectedDate
+            currentClient.roomsBooked.push(room)
+            availableRoomsonDate.splice(availableRoomsonDate.indexOf(room), 1)
+        }
+    })
+    updateAvailableContainer()
+    updatePastAndUpcomingBookingsContainer()
+    updateGuestAvailableBookings()
+    updateGuestPastAndUpcomingBookings()
+    calculateClientExpenses()
+}
+    
+function resetAvailableRoomsContainers() {
+    availableRoomsContainer.innerHTML = ''
+    guestAvailableRoomsContainer.innerHTML = ''
+}
+
 function show(element) {
     element.classList.remove('hidden')
 }
