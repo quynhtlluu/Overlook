@@ -282,6 +282,51 @@ function availableRoomsStats() {
     return roomsAvailableStats.innerText = `Rooms Available: ${allRoomsData.length - uniqueRoomNumbers.length}`
 }
 
+function calculateTotalRevenueForDate() {
+    const revenue = roomsBookedOnDay.reduce((sum, room) => {
+        let total = sum + room.costPerNight
+        return total
+    }, 0)
+    return revenueStats.innerText = `Total Revenue: $${revenue.toFixed(2)}`
+}
+
+function renderClientPage(client) {
+    hide(loginPage)
+    show(userMainPage)
+    displayClientDetails(client)
+    changeBookingData(allBookingsData, allRoomsData)
+    currentClient = client
+    showPastBookings()
+    displayRoomTypeOptions()
+}
+
+function renderManagerPage() {
+    hide(loginPage)
+    show(managerPage)
+    currentDate()
+    changeBookingData(allBookingsData, allRoomsData)
+    renderRoomsBookedOnCurrentDate()
+    calculateTotalRevenueForDate()
+    availableRoomsStats()
+    displayRoomTypeOptions()
+    todaysDate.innerText = `${currentDay}'s Stats`
+    occupiedRoomsStats.innerText = `Occupied Rooms: ${(roomsBookedOnDay.length/allRoomsData.length)*100}%`
+}
+
+function renderRoomTypeOptions(uniqueRoomTypes) {
+    roomTypeSelection.innerHTML = ''
+    guestRoomTypeOptions.innerHTML = ''
+    uniqueRoomTypes.forEach(roomType => {
+        roomTypeSelection.innerHTML += `
+        <option disabled hidden selected>Room Type</option>
+        <option value="${roomType}">${roomType}</option>`
+
+        guestRoomTypeOptions.innerHTML += `
+        <option disabled hidden selected>Room Type</option>
+        <option value="${roomType}">${roomType}</option>`
+    })
+}
+
 function show(element) {
     element.classList.remove('hidden')
 }
