@@ -169,6 +169,21 @@ function showPastBookings() {
     calculateClientExpenses()
 }
 
+function currentDate() {
+    let date = new Date().toISOString().split('T')[0]
+    const splitDate = date.split("-")
+    const joinDate = splitDate.join('/')
+    currentDay = joinDate
+    currentDateNumbers()
+}
+
+function currentDateNumbers() {
+    let splitDay = currentDay.split('/')
+    const dateNumbers = splitDay.map(date => parseInt(date))
+    year = dateNumbers[0]
+    month = dateNumbers[1]
+    day = dateNumbers[2]
+}
 
 // An example of how you tell webpack to use a CSS (SCSS) file
 import './css/styles.css';
