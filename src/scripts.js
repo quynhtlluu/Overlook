@@ -133,6 +133,20 @@ function addBookingsPost() {
     }
 }
 
+//event handlers
+function clientGenerator() {
+    return allCustomersData.forEach(customer => {
+        clients.push(new User(customer))
+    })
+}
+
+function changeBookingData(bookingsData, roomsData) {
+    const changeBookingDetails = clients.forEach(client => {
+        client.determineBookingRoomType(bookingsData, roomsData)
+    })
+    return changeBookingDetails
+}
+
 // An example of how you tell webpack to use a CSS (SCSS) file
 import './css/styles.css';
 
