@@ -112,6 +112,25 @@ function addBookingsPost() {
         errorMessage.innerText = `${err.message}`
         managerErrorMessage.innerText = `${err.message}`
     })
+
+    function deleteBookingsFetch(bookingId) {
+        return fetch(`http://localhost:3001/api/v1/bookings/${bookingId}`, {
+            method:'DELETE',
+            headers: {"Content-Type": "application/json"},
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('There was an error removing a reservation, try again')
+            } else {
+                managerErrorMessage.innerHTML = ''
+                return response.json()
+            }
+        })
+        .then(() => bookingsFetch())
+        .catch(err => {
+          managerErrorMessage.innerHTML = `${err.message}`
+      })
+    }
 }
 
 // An example of how you tell webpack to use a CSS (SCSS) file
