@@ -169,6 +169,25 @@ function showPastBookings() {
     calculateClientExpenses()
 }
 
+function calculateClientExpenses() {
+    let expenses = currentClient.userExpenseTotal()
+    expenseMessages(expenses)
+}
+
+function renderRoomsAvailable(dateValue) {
+    let dateInput = dateValue.value.split("-")
+    selectedDate = dateInput.join("/")
+    determineAvailableRoomsConditions()
+}
+
+function filterAvailableRoomsByRoomType(selection) {
+    let filteredRoomTypes = availableRoomsonDate.filter(room => room.roomType === selection)
+    resetAvailableRoomsContainers()
+    filteredRoomTypes.forEach(room => {
+        filterRoomTypeContainers(room)
+    })
+}
+
 function currentDate() {
     let date = new Date().toISOString().split('T')[0]
     const splitDate = date.split("-")
@@ -184,6 +203,7 @@ function currentDateNumbers() {
     month = dateNumbers[1]
     day = dateNumbers[2]
 }
+
 
 // An example of how you tell webpack to use a CSS (SCSS) file
 import './css/styles.css';
