@@ -380,6 +380,94 @@ function resetAvailableRoomsContainers() {
     guestAvailableRoomsContainer.innerHTML = ''
 }
 
+function updateAvailableContainer() {
+    availableRoomsContainer.innerHTML = ''
+    availableRoomsonDate.forEach(room => {
+        availableRoomsContainer.innerHTML += `<section class="room-details-and-book-container">
+        <section class="room-info">
+        <p class="room-spec" id="${room.number}">Room Type: ${room.roomType}</p>
+        <p class="room-spec" id="room-detail-title">Room Details:</p>
+        <p class="room-spec" id="room-bed-info">Bed size: ${room.bedSize} [x${room.numBeds}]</p>
+        <p class="room-spec" id="room-date-info">Available Date: ${selectedDate}</p>
+        </section>
+        <section class="rates-and-book">
+        <p class="room-spec" id="rates">$${room.costPerNight} per night</p>
+        <button class="book" id='${room.number}'>Book</button>
+        </section>
+        </section>`
+    })
+}
+
+function updatePastAndUpcomingBookingsContainer() {
+    pastAndUpcomingBookingContainer.innerHTML = ''
+    currentClient.roomsBooked.forEach(booking => {
+        pastAndUpcomingBookingContainer.innerHTML += `<section class="user-booking-details">
+        <p class="room-spec2" id="date-booked">Date Booked: ${booking.date}</p>
+        <p class="room-spec2" id="room-detail-title">Room Details:</p>
+        <p class="room-spec2" id="room-bed-info">Bed size: ${booking.bedSize} [x${booking.numBeds}]</p>
+        <p class="room-spec2" id="rates2"> Cost: $${booking.costPerNight} per night</p>
+        </section>`
+    })
+}
+
+function updateGuestAvailableBookings() {
+    guestAvailableRoomsContainer.innerHTML = ''
+    availableRoomsonDate.forEach(room => {
+        guestAvailableRoomsContainer.innerHTML += `<section class="room-details-and-book-container">
+        <section class="room-info">
+        <p class="room-spec" id="${room.number}">Room Type: ${room.roomType}</p>
+        <p class="room-spec" id="room-detail-title">Room Details:</p>
+        <p class="room-spec" id="room-bed-info">Bed size: ${room.bedSize} [x${room.numBeds}]</p>
+        <p class="room-spec" id="room-date-info">Available Date: ${selectedDate}</p>
+        </section>
+        <section class="rates-and-book">
+        <p class="room-spec" id="rates">$${room.costPerNight} per night</p>
+        <button class="book" id='${room.number}'>Book</button>
+        </section>
+        </section>`
+    })
+}
+
+function updateGuestPastAndUpcomingBookings() {
+    guestPastAndUpcomingBookingContainer.innerHTML = ''
+    currentClient.roomsBooked.forEach(booking => {
+        guestPastAndUpcomingBookingContainer.innerHTML += `<section class="guest-booking-details">
+        <p class="room-spec2" id="date-booked">Date Booked: ${booking.date}</p>
+        <p class="room-spec2" id="room-detail-title">Room Details:</p>
+        <p class="room-spec2" id="room-bed-info">Bed size: ${booking.bedSize} [x${booking.numBeds}]</p>
+        <p class="room-spec2" id="rates2"> Cost: $${booking.costPerNight} per night</p>
+        <button class="manager-delete-booking" id=${booking.bookingId}>Delete</button>
+      </section>`
+        })
+}
+
+function filterRoomTypeContainers(room) {
+    availableRoomsContainer.innerHTML += `<section class="room-details-and-book-container">
+    <section class="room-info">
+      <p class="room-spec" id="${room.number}">Room Type: ${room.roomType}</p>
+      <p class="room-spec" id="room-detail-title">Room Details:</p>
+      <p class="room-spec" id="room-bed-info">Bed size: ${room.bedSize} [x${room.numBeds}]</p>
+      <p class="room-spec" id="room-date-info">Available Date: ${selectedDate}</p>
+    </section>
+    <section class="rates-and-book">
+      <p class="room-spec" id="rates">$${room.costPerNight} per night</p>
+      <button class="book" id='${room.number}'>Book</button>
+    </section>
+  </section>`
+
+  guestAvailableRoomsContainer.innerHTML += `<section class="room-details-and-book-container">
+  <section class="room-info">
+    <p class="room-spec" id="${room.number}">Room Type: ${room.roomType}</p>
+    <p class="room-spec" id="room-detail-title">Room Details:</p>
+    <p class="room-spec" id="room-bed-info">Bed size: ${room.bedSize} [x${room.numBeds}]</p>
+    <p class="room-spec" id="room-date-info">Available Date: ${selectedDate}</p>
+  </section>
+  <section class="rates-and-book">
+    <p class="room-spec" id="rates">$${room.costPerNight} per night</p>
+    <button class="book" id='${room.number}'>Book</button>
+  </section>
+</section>`
+}
 function show(element) {
     element.classList.remove('hidden')
 }
