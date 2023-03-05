@@ -44,6 +44,23 @@ const guestRoomTypeOptions = document.querySelector('#guest-roomtype-options')
 const managerCalenderInput = document.querySelector('#managerCalenderInput')
 const managerErrorMessage = document.querySelector('.manager-error-message')
 
+//global variables
+let allCustomersData;
+let clients = []
+let currentClient;
+let allRoomsData;
+let allBookingsData;
+let selectedDate;
+let roomNumber;
+let availableRoomsonDate;
+let currentDay;
+let roomsBookedOnDay = []
+let roomIdFromPost;
+let year;
+let month;
+let day;
+let bookedDateNumbers;
+
 // An example of how you tell webpack to use a CSS (SCSS) file
 import './css/styles.css';
 
