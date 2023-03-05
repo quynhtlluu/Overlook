@@ -238,6 +238,50 @@ function currentDateNumbers() {
     day = dateNumbers[2]
 }
 
+function findGuest() {
+    if(findGuestInput.value === '') {
+        managerErrorMessage.innerText = `Please enter the client's first and last name`
+    } else {
+        clearErrorMessages()
+        currentClient = clients.find(client => client.name.toLowerCase() === findGuestInput.value.toLowerCase())
+        currentClient.determineUserPastBookings()
+        updateGuestPastAndUpcomingBookings()
+        calculateClientExpenses()
+    }
+}
+
+function displayRoomTypeOptions() {
+    let roomTypes = allRoomsData.map(room => room.roomType)
+    let uniqueRoomTypes = roomTypes.filter((roomType, index) => {
+        return roomTypes.indexOf(roomType) === index
+    })
+    renderRoomTypeOptions(uniqueRoomTypes)
+}
+
+function renderRoomsBookedOnCurrentDate() {
+    clients.forEach(client => {
+        client.bookingRoomDetails.forEach(booking => {
+            if(booking.date === currentDay) {
+                roomsBookedOnDay.push(booking)
+            }
+        })
+    })
+    renderUniqueRooms()
+}
+
+function availableRoomsStats() {
+    const uniqueRoomNumber = []
+    const uniqueRoomNumbers = roomsBookedOnDay.filter(room => {
+        const isDuplicateRoomNumber = uniqueRoomNumber.includes(room.roomNumber)
+        if(!isDuplicateRoomNumber) {
+            uniqueRoomNumber.push(room.roomNumber)
+            return true
+        }
+        return false
+    })
+    return roomsAvailableStats.innerText = `Rooms Available: ${allRoomsData.length - uniqueRoomNumbers.length}`
+}
+
 function show(element) {
     element.classList.remove('hidden')
 }
