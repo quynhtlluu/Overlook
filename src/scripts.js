@@ -327,6 +327,25 @@ function renderRoomTypeOptions(uniqueRoomTypes) {
     })
 }
 
+function determineAvailableRoomsConditions() {
+    if(selectedDate === '' || findGuestInput.value === '' && !managerPage.classList.contains('hidden')) {
+        errorMessage.innerText = 'Please select a date'
+        managerErrorMessage.innerText = 'Please select a date or find a client'
+    } else {
+        availableRoomsonDate = currentClient.renderAvailableRooms(selectedDate, allBookingsData, allRoomsData)
+        resetAvailableRoomsContainers()
+        clearErrorMessages()
+        if(availableRoomsonDate.length !== 0) {
+            clearErrorMessages()
+            availableRoomsonDate.forEach(room => {
+                filterRoomTypeContainers(room)
+            })
+        } else {
+            displayNoRoomsError()
+        }
+    }
+}
+
 function show(element) {
     element.classList.remove('hidden')
 }
