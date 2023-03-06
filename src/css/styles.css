@@ -64,3 +64,256 @@ header {
   margin-left: 95%;
   background-color: #83f546;
 }
+
+.user-logout-button:hover, .manager-logout-button:hover {
+  background-color: #49d100;
+  transform: scale(1.075);
+  transition: 0.2s ease-in;
+  cursor: pointer;
+}
+
+.arrow {
+  border: solid black;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 3px;
+}
+
+.right {
+  transform: rotate(-45deg);
+}
+
+.user-header {
+  display: flex;
+  width: 100vw;
+}
+
+.welcome-user, .available-rooms, .stay-statement {
+  margin-bottom: 0%;
+  margin-left: 3%;
+  color:#FFF8DC;
+  /* color: white; */
+  text-decoration: underline;
+  font-size: 30px;
+}
+
+.guest-available-rooms {
+  margin-bottom: 0%;
+  margin-left: 3%;
+  font-size: 25px;
+}
+
+.search-button, .filter-room-input {
+  cursor: pointer;
+}
+
+.user-expenses {
+  font-size: 35px;
+  margin-bottom: 0%;
+  margin-left: 45%;
+  color: #FFF8DC;
+  /* color: #FF7F50; */
+}
+
+.user-content {
+  display: grid;
+  grid-template-columns: auto auto;
+  height: 100vh;
+  width: 100vw;
+}
+
+.booking-and-filtering {
+  display: flex;
+  font-size: 23px;
+  margin-left: 3%;
+  font-weight: bold;
+  color:#EE82EE
+}
+
+.guest-booking-and-filtering {
+  display: flex;
+  margin-left: 3%;
+  font-size: 20px;
+}
+
+.rooms-container, .guest-rooms-container {
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(251, 251, 251, 0.3);
+  border-style: outset;
+  height: 78%;
+  margin-top: 5px;
+  margin-left: 3%;
+  overflow-y: auto;
+}
+
+aside {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.bookings-header {
+  font-size: 30px;
+  margin-right: 25%;
+  color: #FFF8DC;
+  margin-bottom: 0%;
+  text-decoration: underline;
+}
+
+.guest-bookings-header {
+  font-size: 25px;
+  margin-right: 12%;
+  margin-bottom: 0%;
+}
+
+.user-bookings-container, .guest-bookings-container {
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(251, 251, 251, 0.3);
+  border-style: outset;
+  height: 690px;
+  width: 77%;
+  margin-right: 3%;
+  overflow-y: auto;
+}
+
+.room-details-and-book-container, .guest-room-details-and-book-container {
+  display: flex;
+  justify-content: space-around;
+  background-color: rgba(255, 236, 128, 0.882);
+  border-style: solid;
+  border-radius: 20px;
+  margin-bottom: 10px;
+  height: 25%;
+  width: 100%;
+}
+
+.user-booking-details, .guest-booking-details{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(57, 245, 182, 0.884);
+  border-style: solid;
+  border-radius: 20px;
+  margin-bottom: 10px;
+  height: 17%;
+  width: 100%;
+}
+
+.room-details-and-book-container:hover, .user-booking-details:hover,
+.guest-room-details-and-book-container:hover, .guest-booking-details:hover {
+  transform: scale(1.015);
+  transition: 0.2s ease-in;
+}
+
+.rates-and-book {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.book, .manager-delete-booking {
+  background-color: #9ae9f7;
+}
+
+.book:hover, .manager-delete-booking:hover {
+  background-color: #46b9f5;
+  transform: scale(1.075);
+  transition: 0.2s ease-in;
+  cursor: pointer;
+}
+
+.room-spec2 {
+  margin: 0%;
+}
+
+.room-spec {
+  margin-top: 0%;
+}
+
+.user-check-in-info {
+  height: 70vh;
+}
+
+.error-message, .manager-error-message {
+  margin-left: 80px;
+  font-weight: bold;
+  font-size: 25px;
+  color: red;
+}
+
+* manager-page-specs */
+
+
+.manager-page {
+   display: grid; 
+   grid-template-rows: 6rem auto 45px 1fr 1fr;
+   grid-template-columns: 16rem 0.5fr 1fr 1fr 1fr 1fr;
+   
+   gap: 3px;
+   height: 100vh;
+}
+  
+.manager-portal-header {
+
+   background-color: #edeec9; 
+   grid-row-start: 1;
+   grid-column-start: 1;
+
+   grid-row-end: 2;
+   grid-column-end: 7;
+   
+}
+.hotel-stats {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   justify-content: center;
+   background-color: #dde7c7; 
+   font-size: 30px;
+   grid-row-start: 2;
+   grid-column-start: 1;
+
+   grid-row-end: 6;
+   grid-column-end: 3;
+   
+}
+.find-guest-content {
+   background-color: #bfd8bd; 
+   font-size: 25px;
+   padding-left: 43%;
+   grid-row-start: 2;
+   grid-column-start: 3;
+
+   grid-row-end: 3;
+   grid-column-end: 7;
+   
+}
+.guest-check-in-info {
+   background-color: #98c9a3; 
+   grid-row-start: 3;
+   grid-column-start: 3;
+
+   grid-row-end: 6;
+   grid-column-end: 5;
+   
+}
+.guest-bookings {
+   background-color: #77bfa3; 
+   grid-row-start: 3;
+   grid-column-start: 5;
+
+   grid-row-end: 6;
+   grid-column-end: 7;
+   
+}
+
+.guest-expenses {
+  font-size: 20px;
+}
+
+.hidden {
+  display: none;
+}
