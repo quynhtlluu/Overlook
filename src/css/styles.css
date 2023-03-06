@@ -87,3 +87,18 @@ header {
   display: flex;
   width: 100vw;
 }
+
+.user-expenses {
+  font-size: 35px;
+  margin-bottom: 0%;
+  margin-left: 45%;
+  color: #FFF8DC;
+  /* color: #FF7F50; */
+}
+
+.user-content {
+  display: grid;
+  grid-template-columns: auto auto;
+  height: 100vh;
+  width: 100vw;
+}
