@@ -243,3 +243,77 @@ aside {
   font-size: 25px;
   color: red;
 }
+
+* manager-page-specs */
+
+
+.manager-page {
+   display: grid; 
+   grid-template-rows: 6rem auto 45px 1fr 1fr;
+   grid-template-columns: 16rem 0.5fr 1fr 1fr 1fr 1fr;
+   
+   gap: 3px;
+   height: 100vh;
+}
+  
+.manager-portal-header {
+
+   background-color: #edeec9; 
+   grid-row-start: 1;
+   grid-column-start: 1;
+
+   grid-row-end: 2;
+   grid-column-end: 7;
+   
+}
+.hotel-stats {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   justify-content: center;
+   background-color: #dde7c7; 
+   font-size: 30px;
+   grid-row-start: 2;
+   grid-column-start: 1;
+
+   grid-row-end: 6;
+   grid-column-end: 3;
+   
+}
+.find-guest-content {
+   background-color: #bfd8bd; 
+   font-size: 25px;
+   padding-left: 43%;
+   grid-row-start: 2;
+   grid-column-start: 3;
+
+   grid-row-end: 3;
+   grid-column-end: 7;
+   
+}
+.guest-check-in-info {
+   background-color: #98c9a3; 
+   grid-row-start: 3;
+   grid-column-start: 3;
+
+   grid-row-end: 6;
+   grid-column-end: 5;
+   
+}
+.guest-bookings {
+   background-color: #77bfa3; 
+   grid-row-start: 3;
+   grid-column-start: 5;
+
+   grid-row-end: 6;
+   grid-column-end: 7;
+   
+}
+
+.guest-expenses {
+  font-size: 20px;
+}
+
+.hidden {
+  display: none;
+}
