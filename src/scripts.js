@@ -468,6 +468,67 @@ function filterRoomTypeContainers(room) {
   </section>
 </section>`
 }
+
+function clearErrorMessages() {
+    errorMessage.innerText = ''
+    managerErrorMessage.innerText = ''
+}
+
+function displayNoRoomsError() {
+    errorMessage.innerText = "Sorry, all rooms are booked on this date! 😭 Please choose another date."
+    managerErrorMessage.innerText = "Sorry, all rooms are booked on this date! 😭 Please choose another date."
+}
+
+function expenseMessages(expenses) {
+    userExpenseMessage.innerText = `Your total expenses: $${expenses}`
+    guestExpenseMessage.innerText = `Guest total expenses: $${expenses}`
+}
+
+function userLogOutFunction() {
+    hide(userMainPage)
+    show(loginPage)
+    hide(incorrentLoginText)
+    resetAndReFetch()
+}
+
+function managerLogOutFunction() {
+    hide(managerPage)
+    show(loginPage)
+    hide(incorrentLoginText)
+    resetAndReFetch()
+}
+
+function displayClientDetails(client) {
+    welcomeUserMessage.innerText = `Welcome, ${client.name}`
+    userExpenseMessage.innerText = `Your total expenses: $${client.expenses}`
+}
+
+function resetAndReFetch() {
+    resetExpenseMessages()
+    setVariablesToEmptyStringAndArrays()
+    clearErrorMessages()
+    allCustomersFetch()
+    roomsFetch()
+    bookingsFetch()
+}
+
+function resetExpenseMessages() {
+    userExpenseMessage.innerText = `Your total expenses: $0.00`
+    guestExpenseMessage.innerText = `Guest total expenses: $0.00`
+}
+
+function setVariablesToEmptyStringAndArrays() {
+    clients = []
+    currentClient = ''
+    availableRoomsContainer.innerHTML = ``
+    pastAndUpcomingBookingContainer.innerHTML = ``
+    guestAvailableRoomsContainer.innerHTML = ''
+    guestPastAndUpcomingBookingContainer.innerHTML = ''
+    calenderInput.value = ''
+    managerCalenderInput.value = ''
+    findGuestInput.value = ''
+}
+
 function show(element) {
     element.classList.remove('hidden')
 }
