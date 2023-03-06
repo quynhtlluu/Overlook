@@ -177,3 +177,33 @@ aside {
   margin-right: 3%;
   overflow-y: auto;
 }
+
+.room-details-and-book-container, .guest-room-details-and-book-container {
+  display: flex;
+  justify-content: space-around;
+  background-color: rgba(255, 236, 128, 0.882);
+  border-style: solid;
+  border-radius: 20px;
+  margin-bottom: 10px;
+  height: 25%;
+  width: 100%;
+}
+
+.user-booking-details, .guest-booking-details{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(57, 245, 182, 0.884);
+  border-style: solid;
+  border-radius: 20px;
+  margin-bottom: 10px;
+  height: 17%;
+  width: 100%;
+}
+
+.room-details-and-book-container:hover, .user-booking-details:hover,
+.guest-room-details-and-book-container:hover, .guest-booking-details:hover {
+  transform: scale(1.015);
+  transition: 0.2s ease-in;
+}
