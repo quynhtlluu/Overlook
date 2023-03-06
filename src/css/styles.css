@@ -88,6 +88,25 @@ header {
   width: 100vw;
 }
 
+.welcome-user, .available-rooms, .stay-statement {
+  margin-bottom: 0%;
+  margin-left: 3%;
+  color:#FFF8DC;
+  /* color: white; */
+  text-decoration: underline;
+  font-size: 30px;
+}
+
+.guest-available-rooms {
+  margin-bottom: 0%;
+  margin-left: 3%;
+  font-size: 25px;
+}
+
+.search-button, .filter-room-input {
+  cursor: pointer;
+}
+
 .user-expenses {
   font-size: 35px;
   margin-bottom: 0%;
