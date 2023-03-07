@@ -34,8 +34,11 @@ This application makes it convenient for people to keep track of data as they ar
 5. Enter `https://localhost:8080` in your web browser to view the web application.
   i. To stop the web application from running on one's local server, enter `CTRL + C` into one's command line interpreter.
 
-## Developers
+## Developer
 - [Quynh Luu](https://github.com/quynhtlluu)
+
+## Code Reviewer
+- [Amber Shipley](https://github.com/EspressoGoddess)
 
 ## Goals
 - Use OOP to drive the design of the application and the code
