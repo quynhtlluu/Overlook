@@ -3,18 +3,18 @@
 
 
 import './css/styles.css';
-//imported classes
+
 import Bookings from './classes/bookings-class.js'
 import Rooms from './classes/rooms-class.js'
 import User from './classes/user-class.js'
 
-//login-page querySelectors
+
 const loginPage = document.querySelector('.login-page')
 const username = document.querySelector('#userLoginValue')
 const password = document.querySelector('#userPassLoginValue')
 const loginButton = document.querySelector('.login-button')
 const incorrentLoginText = document.querySelector('.incorrect-login-text')
-//user-page querySelectors
+
 const userMainPage = document.querySelector('.user-main-page')
 const userLogOut = document.querySelector('.user-logout-button')
 const welcomeUserMessage = document.querySelector('.welcome-user')
@@ -26,7 +26,7 @@ const errorMessage = document.querySelector('.error-message')
 const availableRoomsContainer = document.querySelector('.rooms-container')
 const pastAndUpcomingBookingContainer = document.querySelector(".user-bookings-container")
 const roomTypeSelection = document.querySelector('#user-roomtype-options')
-//manager-page querySelectors
+
 const managerPage = document.querySelector('.manager-page')
 const managerLogOut = document.querySelector('.manager-logout-button')
 const todaysDate = document.querySelector('.today-stats')
@@ -44,7 +44,7 @@ const guestRoomTypeOptions = document.querySelector('#guest-roomtype-options')
 const managerCalenderInput = document.querySelector('#managerCalenderInput')
 const managerErrorMessage = document.querySelector('.manager-error-message')
 
-//global variables
+
 let allCustomersData;
 let clients = []
 let currentClient;
@@ -61,8 +61,38 @@ let month;
 let day;
 let bookedDateNumbers;
 
+window.addEventListener('load', function() {	
+    allCustomersFetch()	
+    roomsFetch()	
+    bookingsFetch()	
+})	
+loginButton.addEventListener('click', login)	
+userLogOut.addEventListener('click', userLogOutFunction)	
+managerLogOut.addEventListener('click', managerLogOutFunction)	
+searchBookingsButton.addEventListener('click', function() {	
+    renderRoomsAvailable(calenderInput)	
+})	
+filterBookingsButton.addEventListener('click', function() {	
+    filterAvailableRoomsByRoomType(roomTypeSelection.options[roomTypeSelection.selectedIndex].text)	
+})	
+managerSearchRoomDateButton.addEventListener('click', function() {	
+    renderRoomsAvailable(managerCalenderInput)	
+})	
+managerFilterRoomButton.addEventListener('click', function() {	
+    filterAvailableRoomsByRoomType(guestRoomTypeOptions.options[guestRoomTypeOptions.selectedIndex].text)	
+})	
+availableRoomsContainer.addEventListener('click', function(event) {	
+    bookRoom(event)	
+})	
+guestAvailableRoomsContainer.addEventListener('click', function(event) {	
+    bookRoom(event)	
+})	
+guestPastAndUpcomingBookingContainer.addEventListener('click', function(event) {	
+    deleteRoom(event)	
+})	
+findGuestSubmitButton.addEventListener('click', findGuest)
 
-//fetch functions
+
 function allCustomersFetch() {
     fetch(`http://localhost:3001/api/v1/customers`)
     .then(response => response.json())
@@ -170,7 +200,7 @@ function showPastBookings() {
 }
 
 function calculateClientExpenses() {
-    let expenses = currentClient.userExpenseTotal()
+    let expenses = currentClient.retrieveUserExpenseTotal()
     expenseMessages(expenses)
 }
 
