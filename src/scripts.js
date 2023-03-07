@@ -4,9 +4,9 @@
 
 import './css/styles.css';
 //imported classes
-import Bookings from './classes/bookings.js'
-import Rooms from './classes/rooms.js'
-import User from './classes/user.js'
+import Bookings from './classes/bookings-class.js'
+import Rooms from './classes/rooms-class.js'
+import User from './classes/user-class.js'
 
 //login-page querySelectors
 const loginPage = document.querySelector('.login-page')
