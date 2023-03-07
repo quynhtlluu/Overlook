@@ -55,6 +55,9 @@ This application makes it convenient for people to keep track of data as they ar
 ## Demonstration
 Upon loading the web application's main interface, a user is able to login with personal information. They are able to filter hotel room bookings by a given date. They are also able to filter a hotel room booking by a given type of room. They can then book a room of their choosing. If a user were to log out and then log back in as a manager, they would be able to a whole list of information about rooms.
 
+https://user-images.githubusercontent.com/103916293/223342657-0e1661d9-6fc9-476a-9f6f-62da75640cd6.mov
+
+
 ## Technologies Used
 - Javascript (ES5, ES6)
 - [Node.js](https://nodejs.org/en/)
