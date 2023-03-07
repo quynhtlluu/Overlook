@@ -200,7 +200,7 @@ function showPastBookings() {
 }
 
 function calculateClientExpenses() {
-    let expenses = currentClient.userExpenseTotal()
+    let expenses = currentClient.retrieveUserExpenseTotal()
     expenseMessages(expenses)
 }
 
