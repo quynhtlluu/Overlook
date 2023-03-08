@@ -1,104 +1,81 @@
 // This is the JavaScript entry file - your code begins here
 // Do not delete or rename this file ********
 
-
 import './css/styles.css';
-
+//imported classes
 import Bookings from './classes/bookings-class.js'
 import Rooms from './classes/rooms-class.js'
 import User from './classes/user-class.js'
+import Manager from './classes/manager.js'
 
-
+//login-page querySelectors
 const loginPage = document.querySelector('.login-page')
 const username = document.querySelector('#userLoginValue')
 const password = document.querySelector('#userPassLoginValue')
 const loginButton = document.querySelector('.login-button')
 const incorrentLoginText = document.querySelector('.incorrect-login-text')
-
+//user-page querySelectors
 const userMainPage = document.querySelector('.user-main-page')
-const userLogOut = document.querySelector('.user-logout-button')
+//const userLogOut = document.querySelector('.user-logout-button')
 const welcomeUserMessage = document.querySelector('.welcome-user')
 const userExpenseMessage = document.querySelector('.user-expenses')
 const calenderInput = document.querySelector('#calenderInput')
-const searchBookingsButton = document.querySelector('.search-button-date')
-const filterBookingsButton = document.querySelector('.filter-button-room')
+const searchDateButton = document.querySelector('.search-button')
 const errorMessage = document.querySelector('.error-message')
 const availableRoomsContainer = document.querySelector('.rooms-container')
 const pastAndUpcomingBookingContainer = document.querySelector(".user-bookings-container")
-const roomTypeSelection = document.querySelector('#user-roomtype-options')
-
+const roomTypeSection = document.querySelector('.filter-rooms-input')
+const roomTypeSelection = document.querySelector('select')
+const clearRoomTypeSubmitButton = document.querySelector('.clear-room-input')
+//manager-page querySelectors
 const managerPage = document.querySelector('.manager-page')
 const managerLogOut = document.querySelector('.manager-logout-button')
-const todaysDate = document.querySelector('.today-stats')
-const occupiedRoomsStats = document.querySelector('#occupiedRooms')
-const revenueStats = document.querySelector('#totalRevenue')
-const roomsAvailableStats = document.querySelector('#roomsAvailable')
-const findGuestInput = document.querySelector('#findGuestInput')
-const findGuestSubmitButton = document.querySelector('.search-guest-button')
-const guestAvailableRoomsContainer = document.querySelector('.guest-rooms-container')
-const guestPastAndUpcomingBookingContainer = document.querySelector('.guest-bookings-container')
-const guestExpenseMessage = document.querySelector('.guest-expenses')
-const managerSearchRoomDateButton = document.querySelector('.search-button-date2')
-const managerFilterRoomButton = document.querySelector('.filter-button-room2')
-const guestRoomTypeOptions = document.querySelector('#guest-roomtype-options')
-const managerCalenderInput = document.querySelector('#managerCalenderInput')
-const managerErrorMessage = document.querySelector('.manager-error-message')
-
-
+//global variables
 let allCustomersData;
 let clients = []
+let customerInfo;
 let currentClient;
 let allRoomsData;
 let allBookingsData;
 let selectedDate;
 let roomNumber;
-let availableRoomsonDate;
-let currentDay;
-let roomsBookedOnDay = []
-let roomIdFromPost;
-let year;
-let month;
-let day;
-let bookedDateNumbers;
+//event listeners
+window.addEventListener('load', function() {
+    singleCustomerFetch()
+    //allCustomersFetch()
+    roomsFetch()
+    bookingsFetch()
+    //displayRoomTypeOptions()
+})
+//loginButton.addEventListener('click', login)
+//userLogOut.addEventListener('click', userLogOutFunction)
+//managerLogOut.addEventListener('click', managerLogOutFunction)
+searchDateButton.addEventListener('click', showAvailableRoomsByDateAndRoomType)
+// clearRoomTypeSubmitButton.addEventListener('click', clear)
+availableRoomsContainer.addEventListener('click', function(event) {
+    bookRoom(event)
+})
+//fetch functions
+// function allCustomersFetch() {
+//     fetch(`http://localhost:3001/api/v1/customers`)
+//     .then(response => response.json())
+//     .then(data => {
+//         allCustomersData = data.customers
+//         let currentClientData = allCustomersData[Math.floor(Math.random() * allCustomersData.length)]
+//         allCustomersData.find()
+//         currentClient = new User(currentClientData)
+//         console.log('client', currentClient)
+//         //console.log(allCustomersData)
+//         //clientGenerator()
+//     })
+// }
 
-window.addEventListener('load', function() {	
-    allCustomersFetch()	
-    roomsFetch()	
-    bookingsFetch()	
-})	
-loginButton.addEventListener('click', login)	
-userLogOut.addEventListener('click', userLogOutFunction)	
-managerLogOut.addEventListener('click', managerLogOutFunction)	
-searchBookingsButton.addEventListener('click', function() {	
-    renderRoomsAvailable(calenderInput)	
-})	
-filterBookingsButton.addEventListener('click', function() {	
-    filterAvailableRoomsByRoomType(roomTypeSelection.options[roomTypeSelection.selectedIndex].text)	
-})	
-managerSearchRoomDateButton.addEventListener('click', function() {	
-    renderRoomsAvailable(managerCalenderInput)	
-})	
-managerFilterRoomButton.addEventListener('click', function() {	
-    filterAvailableRoomsByRoomType(guestRoomTypeOptions.options[guestRoomTypeOptions.selectedIndex].text)	
-})	
-availableRoomsContainer.addEventListener('click', function(event) {	
-    bookRoom(event)	
-})	
-guestAvailableRoomsContainer.addEventListener('click', function(event) {	
-    bookRoom(event)	
-})	
-guestPastAndUpcomingBookingContainer.addEventListener('click', function(event) {	
-    deleteRoom(event)	
-})	
-findGuestSubmitButton.addEventListener('click', findGuest)
-
-
-function allCustomersFetch() {
-    fetch(`http://localhost:3001/api/v1/customers`)
+function singleCustomerFetch() {
+    fetch(`http://localhost:3001/api/v1/customers/12`)
     .then(response => response.json())
     .then(data => {
-        allCustomersData = data.customers
-        clientGenerator()
+        currentClient = new User(data)
+        // console.log(currentClient)
     })
 }
 
@@ -107,19 +84,25 @@ function roomsFetch() {
     .then(response => response.json())
     .then(data => {
         allRoomsData = data.rooms
+        displayRoomTypeOptions()
+        //console.log('rooms data', allRoomsData)
     })
 }
 
 function bookingsFetch() {
-    return fetch(`http://localhost:3001/api/v1/bookings`)
+    fetch(`http://localhost:3001/api/v1/bookings`)
     .then(response => response.json())
     .then(data => {
         allBookingsData = data.bookings
+        changeBookingData(allBookingsData, allRoomsData)
+        //console.log('bookings data', allBookingsData)
     })
 }
 
 function addBookingsPost() {
-    return fetch(`http://localhost:3001/api/v1/bookings`, {
+    // console.log('current client', currentClient.filteredBookings)
+    // console.log(selectedDate)
+    fetch(`http://localhost:3001/api/v1/bookings`, {
         method:'POST',
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({ 
@@ -132,431 +115,186 @@ function addBookingsPost() {
         if (!response.ok) {
           throw new Error('there was an error booking your reservation, Try again')
         } else {
-            clearErrorMessages()
-            return response.json()
+          errorMessage.innerHTML = ''
+          return response.json()
         }
-    })
-    .then(newBooking => roomIdFromPost = newBooking.newBooking.id)
-    .then(() => bookingsFetch())
-    .catch(err => {
-        errorMessage.innerText = `${err.message}`
-        managerErrorMessage.innerText = `${err.message}`
-    })
-
-    function deleteBookingsFetch(bookingId) {
-        return fetch(`http://localhost:3001/api/v1/bookings/${bookingId}`, {
-            method:'DELETE',
-            headers: {"Content-Type": "application/json"},
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('There was an error removing a reservation, try again')
-            } else {
-                managerErrorMessage.innerHTML = ''
-                return response.json()
-            }
-        })
-        .then(() => bookingsFetch())
-        .catch(err => {
-          managerErrorMessage.innerHTML = `${err.message}`
       })
-    }
-}
-
-//event handlers
-function clientGenerator() {
-    return allCustomersData.forEach(customer => {
-        clients.push(new User(customer))
+      .then(() => bookingsFetch())
+      .catch(err => {
+        errorMessage.innerHTML = `${err.message}`
     })
 }
 
 function changeBookingData(bookingsData, roomsData) {
-    const changeBookingDetails = clients.forEach(client => {
-        client.determineBookingRoomType(bookingsData, roomsData)
-    })
-    return changeBookingDetails
-}
-
-function login(event) {
-    event.preventDefault()
-    return clients.find(client => {
-        if(client.username === username.value && password.value === "overlook2021") {
-            renderClientPage(client)
-            return client
-        }
-        else if(username.value === "manager" && password.value === "overlook2021") {
-            renderManagerPage()
-        }
-        else {
-            show(incorrentLoginText)
-        }
-    })
+    let clientBookingData =  currentClient.determineBookingRoomType(bookingsData, roomsData)
+    //showPastBookings()
+    console.log('og rooms booked', currentClient.roomsBooked)
+    //showPastBookings()
+    //currentClient.bookingRoomDetails = clientBookingData
+    console.log('clientBookingData', currentClient.bookingRoomDetails)
+    showPastBookings()
+    displayClientDetails(currentClient)
+    return currentClient.bookingRoomDetails
 }
 
 function showPastBookings() {
-    clients.forEach(client => client.determineUserPastBookings())
-    updatePastAndUpcomingBookingsContainer()
+    // console.log('hi')
+    // changeBookingData(allBookingsData, allRoomsData)
+    // console.log(currentClient)
+    // console.log('og rooms booked', currentClient.roomsBooked)
+    //console.log('available rooms', currentClient.bookingRoomDetails)
+    currentClient.determineUserPastBookings()
+    // displayClientDetails(currentClient)
+    pastAndUpcomingBookingContainer.innerHTML = ''
+    // console.log('clientBookedRooms', currentClient.bookingRoomDetails)
+    currentClient.roomsBooked.forEach(bookedRoom => {
+        pastAndUpcomingBookingContainer.innerHTML += `<section tabindex="0" class="user-booking-details">
+        <p class="room-spec2" id="date-booked">Date Booked: ${bookedRoom.date}</p>
+        <p class="room-spec2" id="room-detail-title">Room Details:</p>
+        <p class="room-spec2" id="room-bed-info">Bed size: ${bookedRoom.bedSize} [x${bookedRoom.numBeds}]</p>
+        <p class="room-spec2" id="rates2"> Cost: $${bookedRoom.costPerNight} per night</p>
+      </section>`
+    })
     calculateClientExpenses()
 }
 
 function calculateClientExpenses() {
     let expenses = currentClient.retrieveUserExpenseTotal()
-    expenseMessages(expenses)
+    //console.log('expenses', expenses)
+    userExpenseMessage.innerText = `Your total expenses: $${expenses}`
 }
-
-function renderRoomsAvailable(dateValue) {
-    let dateInput = dateValue.value.split("-")
-    selectedDate = dateInput.join("/")
-    determineAvailableRoomsConditions()
-}
-
-function filterAvailableRoomsByRoomType(selection) {
-    let filteredRoomTypes = availableRoomsonDate.filter(room => room.roomType === selection)
-    resetAvailableRoomsContainers()
-    filteredRoomTypes.forEach(room => {
-        filterRoomTypeContainers(room)
-    })
-}
-
-async function bookRoom(event) {
-    if(event.target.classList.contains('book')) {
-        roomNumber = parseInt(event.target.id)
-        await addBookingsPost().then(() => {
-            updateAvailableRoomsAndContainers()
-            console.log('rooms booked', currentClient.roomsBooked)
+function showAvailableRoomsByDateAndRoomType() {
+    let dateInput = calenderInput.value.split("-")
+        selectedDate = dateInput.join("/")
+        //console.log('select date', selectedDate)
+    let availableRooms = currentClient.filterByDateAndOrRoomType(selectedDate, roomTypeSelection.options[roomTypeSelection.selectedIndex].text)
+    if(!availableRooms) {
+        console.log('is available rooms true?', availableRooms)
+        errorMessage.innerText = "Sorry there are no rooms available for your selected date or room type, please try again"
+    }
+    else {
+    // console.log('available rooms by roomdate', availableRooms)
+    // console.log('client filterd rooms', currentClient.filteredBookings)
+    // console.log('current Client filtered rooms', currentClient.filteredBookings)
+    errorMessage.innerText = ''
+    availableRoomsContainer.innerHTML = ''
+    availableRooms.forEach(availableRoom => {
+        availableRoomsContainer.innerHTML += `<section class="room-details-and-book-container">
+        <section class="room-info">
+          <p class="room-spec" id="${availableRoom.bookingId}">Room Type: ${availableRoom.roomType}</p>
+          <p class="room-spec" id="room-detail-title">Room Details:</p>
+          <p class="room-spec" id="room-bed-info">Bed size: ${availableRoom.bedSize} [x${availableRoom.numBeds}]</p>
+          <p class="room-spec" id="room-date-info">Available Date: ${availableRoom.date}</p>
+        </section>
+        <section class="rates-and-book">
+          <p class="room-spec" id="rates">$${availableRoom.costPerNight} per night</p>
+          <button class="book" id='${availableRoom.bookingId}'>Book</button>
+        </section>
+      </section>`
         })
+        // show(roomTypeSection)
     }
 }
 
-async function deleteRoom(event) {
-    currentClient.roomsBooked.forEach(roomBooked => {
-        if(event.target.id === roomBooked.bookingId ) {
-            let splitBookedDate = roomBooked.date.split('/')
-            bookedDateNumbers = splitBookedDate.map(bookedDate => parseInt(bookedDate))
-        }
-    })
-    if(event.target.classList.contains(`manager-delete-booking`) && bookedDateNumbers[0] >= year && bookedDateNumbers[1] >= month) {
-        await deleteBookingsFetch(event.target.id).then(() => removeDeletedRoomFromClientsBookedRooms(event))
-    } else {
-         managerErrorMessage.innerHTML = 'That booking is from the past no need to delete it.'
-    }
-}
-
-function removeDeletedRoomFromClientsBookedRooms(event) {
-    currentClient.roomsBooked.forEach(bookedRoom => {
-        if(bookedRoom.bookingId === event.target.id) {
-                managerErrorMessage.innerHTML = ''
-                currentClient.roomsBooked.splice(currentClient.roomsBooked.indexOf(bookedRoom), 1)
-                updateGuestPastAndUpcomingBookings()
-                calculateClientExpenses()
-            } 
-        })
-}
-function currentDate() {
-    let date = new Date().toISOString().split('T')[0]
-    const splitDate = date.split("-")
-    const joinDate = splitDate.join('/')
-    currentDay = joinDate
-    currentDateNumbers()
-}
-
-function currentDateNumbers() {
-    let splitDay = currentDay.split('/')
-    const dateNumbers = splitDay.map(date => parseInt(date))
-    year = dateNumbers[0]
-    month = dateNumbers[1]
-    day = dateNumbers[2]
-}
-
-function findGuest() {
-    if(findGuestInput.value === '') {
-        managerErrorMessage.innerText = `Please enter the client's first and last name`
-    } else {
-        clearErrorMessages()
-        currentClient = clients.find(client => client.name.toLowerCase() === findGuestInput.value.toLowerCase())
-        currentClient.determineUserPastBookings()
-        updateGuestPastAndUpcomingBookings()
-        calculateClientExpenses()
-    }
-}
+// function showAvailableRoomsByRoomType() {
+//     let availableRooms = currentClient.filterRoomByRoomType(roomTypeSelection.options[roomTypeSelection.selectedIndex].text)
+//     console.log('rooms available by room type', availableRooms)
+//     availableRoomsContainer.innerHTML = ''
+//     availableRooms.forEach(availableRoom => {
+//         availableRoomsContainer.innerHTML += `<section class="room-details-and-book-container">
+//         <section class="room-info">
+//           <p class="room-spec" id="${availableRoom.bookingId}">Room Type: ${availableRoom.roomType}</p>
+//           <p class="room-spec" id="room-detail-title">Room Details:</p>
+//           <p class="room-spec" id="room-bed-info">Bed size: ${availableRoom.bedSize} [x${availableRoom.numBeds}]</p>
+//           <p class="room-spec" id="room-date-info">Available Date: ${availableRoom.date}</p>
+//         </section>
+//         <section class="rates-and-book">
+//           <p class="room-spec" id="rates">$${availableRoom.costPerNight} per night</p>
+//           <button class="book" id='${availableRoom.bookingId}'>Book</button>
+//         </section>
+//       </section>`
+//     })
+// }
 
 function displayRoomTypeOptions() {
     let roomTypes = allRoomsData.map(room => room.roomType)
     let uniqueRoomTypes = roomTypes.filter((roomType, index) => {
         return roomTypes.indexOf(roomType) === index
     })
-    renderRoomTypeOptions(uniqueRoomTypes)
-}
-
-function renderRoomsBookedOnCurrentDate() {
-    clients.forEach(client => {
-        client.bookingRoomDetails.forEach(booking => {
-            if(booking.date === currentDay) {
-                roomsBookedOnDay.push(booking)
-            }
-        })
-    })
-    renderUniqueRooms()
-}
-
-function availableRoomsStats() {
-    const uniqueRoomNumber = []
-    const uniqueRoomNumbers = roomsBookedOnDay.filter(room => {
-        const isDuplicateRoomNumber = uniqueRoomNumber.includes(room.roomNumber)
-        if(!isDuplicateRoomNumber) {
-            uniqueRoomNumber.push(room.roomNumber)
-            return true
-        }
-        return false
-    })
-    return roomsAvailableStats.innerText = `Rooms Available: ${allRoomsData.length - uniqueRoomNumbers.length}`
-}
-
-function calculateTotalRevenueForDate() {
-    const revenue = roomsBookedOnDay.reduce((sum, room) => {
-        let total = sum + room.costPerNight
-        return total
-    }, 0)
-    return revenueStats.innerText = `Total Revenue: $${revenue.toFixed(2)}`
-}
-
-function renderClientPage(client) {
-    hide(loginPage)
-    show(userMainPage)
-    displayClientDetails(client)
-    changeBookingData(allBookingsData, allRoomsData)
-    currentClient = client
-    showPastBookings()
-    displayRoomTypeOptions()
-}
-
-function renderManagerPage() {
-    hide(loginPage)
-    show(managerPage)
-    currentDate()
-    changeBookingData(allBookingsData, allRoomsData)
-    renderRoomsBookedOnCurrentDate()
-    calculateTotalRevenueForDate()
-    availableRoomsStats()
-    displayRoomTypeOptions()
-    todaysDate.innerText = `${currentDay}'s Stats`
-    occupiedRoomsStats.innerText = `Occupied Rooms: ${(roomsBookedOnDay.length/allRoomsData.length)*100}%`
-}
-
-function renderRoomTypeOptions(uniqueRoomTypes) {
     roomTypeSelection.innerHTML = ''
-    guestRoomTypeOptions.innerHTML = ''
+    // <option disabled hidden selected>Room Type</option>
     uniqueRoomTypes.forEach(roomType => {
         roomTypeSelection.innerHTML += `
-        <option disabled hidden selected>Room Type</option>
-        <option value="${roomType}">${roomType}</option>`
-
-        guestRoomTypeOptions.innerHTML += `
-        <option disabled hidden selected>Room Type</option>
         <option value="${roomType}">${roomType}</option>`
     })
 }
 
-function determineAvailableRoomsConditions() {
-    if(selectedDate === '' || findGuestInput.value === '' && !managerPage.classList.contains('hidden')) {
-        errorMessage.innerText = 'Please select a date'
-        managerErrorMessage.innerText = 'Please select a date or find a client'
-    } else {
-        availableRoomsonDate = currentClient.renderAvailableRooms(selectedDate, allBookingsData, allRoomsData)
-        resetAvailableRoomsContainers()
-        clearErrorMessages()
-        if(availableRoomsonDate.length !== 0) {
-            clearErrorMessages()
-            availableRoomsonDate.forEach(room => {
-                filterRoomTypeContainers(room)
-            })
-        } else {
-            displayNoRoomsError()
-        }
+function bookRoom(event) {
+    // console.log('target id', event.target.id)
+    if(selectedDate === undefined || roomTypeSelection.options[roomTypeSelection.selectedIndex].text === 'Room Type') {
+        errorMessage.innerText = "Sorry there are no rooms available for your selected date or Room type, please try again"
     }
-}
-
-function renderUniqueRooms() {
-    const uniqueBookedRooms = []
-    const unique = roomsBookedOnDay.filter(room => {
-        const isDuplicate = uniqueBookedRooms.includes(room.bookingId)
-        if(!isDuplicate) {
-            uniqueBookedRooms.push(room.bookingId)
-            return true
-        }
-        return false
-    })
-    return roomsBookedOnDay = unique
-}
-
-function updateAvailableRoomsAndContainers() {
-    availableRoomsonDate.forEach(room => {
-        if(room.number === roomNumber) {
-            room.bookingId = roomIdFromPost
-            room.date = selectedDate
-            currentClient.roomsBooked.push(room)
-            availableRoomsonDate.splice(availableRoomsonDate.indexOf(room), 1)
-        }
-    })
-    updateAvailableContainer()
-    updatePastAndUpcomingBookingsContainer()
-    updateGuestAvailableBookings()
-    updateGuestPastAndUpcomingBookings()
-    calculateClientExpenses()
-}
-    
-function resetAvailableRoomsContainers() {
+    else {
+        errorMessage.innerText = ''
+    let bookings = currentClient.bookRoom(event.target.id)
+    // console.log('booking', bookings)
+    // console.log('event', event.target.id)
+    let specificBooking = bookings.find(booking => booking.bookingId === event.target.id)
+    // console.log('specific', specificBooking)
+    currentClient.roomsBooked = []
+    roomNumber = specificBooking.roomNumber
+    addBookingsPost()
     availableRoomsContainer.innerHTML = ''
-    guestAvailableRoomsContainer.innerHTML = ''
-}
-
-function updateAvailableContainer() {
-    availableRoomsContainer.innerHTML = ''
-    availableRoomsonDate.forEach(room => {
+    // console.log('after booking filtered booking array', currentClient.filteredBookings)
+    currentClient.filteredBookings.forEach(filteredBooking => {
         availableRoomsContainer.innerHTML += `<section class="room-details-and-book-container">
         <section class="room-info">
-        <p class="room-spec" id="${room.number}">Room Type: ${room.roomType}</p>
-        <p class="room-spec" id="room-detail-title">Room Details:</p>
-        <p class="room-spec" id="room-bed-info">Bed size: ${room.bedSize} [x${room.numBeds}]</p>
-        <p class="room-spec" id="room-date-info">Available Date: ${selectedDate}</p>
+          <p class="room-spec" id="${filteredBooking.bookingId}">Room Type: ${filteredBooking.roomType}</p>
+          <p class="room-spec" id="room-detail-title">Room Details:</p>
+          <p class="room-spec" id="room-bed-info">Bed size: ${filteredBooking.bedSize} [x${filteredBooking.numBeds}]</p>
+          <p class="room-spec" id="room-date-info">Available Date: ${filteredBooking.date}</p>
         </section>
         <section class="rates-and-book">
-        <p class="room-spec" id="rates">$${room.costPerNight} per night</p>
-        <button class="book" id='${room.number}'>Book</button>
+          <p class="room-spec" id="rates">$${filteredBooking.costPerNight} per night</p>
+          <button class="book" id='${filteredBooking.bookingId}'>Book</button>
         </section>
-        </section>`
+      </section>`
     })
-}
-
-function updatePastAndUpcomingBookingsContainer() {
     pastAndUpcomingBookingContainer.innerHTML = ''
-    currentClient.roomsBooked.forEach(booking => {
+    bookings.forEach(booking => {
         pastAndUpcomingBookingContainer.innerHTML += `<section class="user-booking-details">
         <p class="room-spec2" id="date-booked">Date Booked: ${booking.date}</p>
         <p class="room-spec2" id="room-detail-title">Room Details:</p>
         <p class="room-spec2" id="room-bed-info">Bed size: ${booking.bedSize} [x${booking.numBeds}]</p>
         <p class="room-spec2" id="rates2"> Cost: $${booking.costPerNight} per night</p>
-        </section>`
-    })
-}
-
-function updateGuestAvailableBookings() {
-    guestAvailableRoomsContainer.innerHTML = ''
-    availableRoomsonDate.forEach(room => {
-        guestAvailableRoomsContainer.innerHTML += `<section class="room-details-and-book-container">
-        <section class="room-info">
-        <p class="room-spec" id="${room.number}">Room Type: ${room.roomType}</p>
-        <p class="room-spec" id="room-detail-title">Room Details:</p>
-        <p class="room-spec" id="room-bed-info">Bed size: ${room.bedSize} [x${room.numBeds}]</p>
-        <p class="room-spec" id="room-date-info">Available Date: ${selectedDate}</p>
-        </section>
-        <section class="rates-and-book">
-        <p class="room-spec" id="rates">$${room.costPerNight} per night</p>
-        <button class="book" id='${room.number}'>Book</button>
-        </section>
-        </section>`
-    })
-}
-
-function updateGuestPastAndUpcomingBookings() {
-    guestPastAndUpcomingBookingContainer.innerHTML = ''
-    currentClient.roomsBooked.forEach(booking => {
-        guestPastAndUpcomingBookingContainer.innerHTML += `<section class="guest-booking-details">
-        <p class="room-spec2" id="date-booked">Date Booked: ${booking.date}</p>
-        <p class="room-spec2" id="room-detail-title">Room Details:</p>
-        <p class="room-spec2" id="room-bed-info">Bed size: ${booking.bedSize} [x${booking.numBeds}]</p>
-        <p class="room-spec2" id="rates2"> Cost: $${booking.costPerNight} per night</p>
-        <button class="manager-delete-booking" id=${booking.bookingId}>Delete</button>
       </section>`
-        })
+    })
+    // console.log('rooms booked', currentClient.roomsBooked)
+    }
 }
 
-function filterRoomTypeContainers(room) {
-    availableRoomsContainer.innerHTML += `<section class="room-details-and-book-container">
-    <section class="room-info">
-      <p class="room-spec" id="${room.number}">Room Type: ${room.roomType}</p>
-      <p class="room-spec" id="room-detail-title">Room Details:</p>
-      <p class="room-spec" id="room-bed-info">Bed size: ${room.bedSize} [x${room.numBeds}]</p>
-      <p class="room-spec" id="room-date-info">Available Date: ${selectedDate}</p>
-    </section>
-    <section class="rates-and-book">
-      <p class="room-spec" id="rates">$${room.costPerNight} per night</p>
-      <button class="book" id='${room.number}'>Book</button>
-    </section>
-  </section>`
+// function userLogOutFunction() {
+//     hide(userMainPage)
+//     show(loginPage)
+//     hide(incorrentLoginText)
+//     currentClient = ''
+//     allRoomsData = ''
+//     allBookingsData = ''
+// }
 
-  guestAvailableRoomsContainer.innerHTML += `<section class="room-details-and-book-container">
-  <section class="room-info">
-    <p class="room-spec" id="${room.number}">Room Type: ${room.roomType}</p>
-    <p class="room-spec" id="room-detail-title">Room Details:</p>
-    <p class="room-spec" id="room-bed-info">Bed size: ${room.bedSize} [x${room.numBeds}]</p>
-    <p class="room-spec" id="room-date-info">Available Date: ${selectedDate}</p>
-  </section>
-  <section class="rates-and-book">
-    <p class="room-spec" id="rates">$${room.costPerNight} per night</p>
-    <button class="book" id='${room.number}'>Book</button>
-  </section>
-</section>`
-}
-
-function clearErrorMessages() {
-    errorMessage.innerText = ''
-    managerErrorMessage.innerText = ''
-}
-
-function displayNoRoomsError() {
-    errorMessage.innerText = "Sorry, all rooms are booked on this date! 😭 Please choose another date."
-    managerErrorMessage.innerText = "Sorry, all rooms are booked on this date! 😭 Please choose another date."
-}
-
-function expenseMessages(expenses) {
-    userExpenseMessage.innerText = `Your total expenses: $${expenses}`
-    guestExpenseMessage.innerText = `Guest total expenses: $${expenses}`
-}
-
-function userLogOutFunction() {
-    hide(userMainPage)
-    show(loginPage)
-    hide(incorrentLoginText)
-    resetAndReFetch()
-}
-
-function managerLogOutFunction() {
-    hide(managerPage)
-    show(loginPage)
-    hide(incorrentLoginText)
-    resetAndReFetch()
-}
+// function managerLogOutFunction() {
+//     hide(managerPage)
+//     show(loginPage)
+//     hide(incorrentLoginText)
+// }
 
 function displayClientDetails(client) {
     welcomeUserMessage.innerText = `Welcome, ${client.name}`
     userExpenseMessage.innerText = `Your total expenses: $${client.expenses}`
 }
 
-function resetAndReFetch() {
-    resetExpenseMessages()
-    setVariablesToEmptyStringAndArrays()
-    clearErrorMessages()
-    allCustomersFetch()
-    roomsFetch()
-    bookingsFetch()
-}
-
-function resetExpenseMessages() {
-    userExpenseMessage.innerText = `Your total expenses: $0.00`
-    guestExpenseMessage.innerText = `Guest total expenses: $0.00`
-}
-
-function setVariablesToEmptyStringAndArrays() {
-    clients = []
-    currentClient = ''
-    availableRoomsContainer.innerHTML = ``
-    pastAndUpcomingBookingContainer.innerHTML = ``
-    guestAvailableRoomsContainer.innerHTML = ''
-    guestPastAndUpcomingBookingContainer.innerHTML = ''
-    calenderInput.value = ''
-    managerCalenderInput.value = ''
-    findGuestInput.value = ''
+function clear() {
+    displayRoomTypeOptions()
 }
 
 function show(element) {
@@ -566,12 +304,3 @@ function show(element) {
 function hide(element) {
     element.classList.add('hidden')
 }
-
-// An example of how you tell webpack to use a CSS (SCSS) file
-import './css/styles.css';
-
-// An example of how you tell webpack to use an image (also need to link to it in the index.html)
-import './images/turing-logo.png'
-
-
-console.log('This is the JavaScript entry file - your code begins here.');
